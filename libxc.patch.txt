@@ -1,0 +1,52 @@
+diff --git a/lib/archive/package.list b/lib/archive/package.list
+index 0bb67a9a4..64873ae53 100644
+--- a/lib/archive/package.list
++++ b/lib/archive/package.list
+@@ -98,12 +98,12 @@ url_netcdff=https://github.com/Unidata/netcdf-fortran/archive/refs/tags/$(tarbal
+ #
+ url_slepc=https://gitlab.com/slepc/slepc/-/archive/v$(version_slepc)/$(tarball_slepc)
+ url_petsc=https://gitlab.com/petsc/petsc/-/archive/v$(version_petsc)/$(tarball_petsc)
+-#url_libxc=https://gitlab.com/libxc/libxc/-/archive/$(version_libxc)/$(tarball_libxc)  # this would require to run "autoreconf -i"
++url_libxc=https://gitlab.com/libxc/libxc/-/archive/$(version_libxc)/$(tarball_libxc)  # this would require to run "autoreconf -i"
+ #
+ # External URL's More
+ #
+ url_fftw=https://fftw.org/$(tarball_fftw)
+-url_libxc=https://www.tddft.org/programs/libxc/down/$(version_libxc)/$(tarball_libxc)
++#url_libxc=https://www.tddft.org/programs/libxc/down/$(version_libxc)/$(tarball_libxc)
+ #
+ # Internal URL's
+ #
+diff --git a/lib/config/external_libs_commons.mk b/lib/config/external_libs_commons.mk
+index 185dd01a7..5900a7777 100644
+--- a/lib/config/external_libs_commons.mk
++++ b/lib/config/external_libs_commons.mk
+@@ -12,6 +12,16 @@ if ! test -e uncompressed.stamp; then \
+ fi
+ endef
+ #
++define autoreconf
++if ! test -e autoreconf.stamp && test -d $(PACKAGE); then \
++ echo "\t[$(PACKAGE)] autoreconf"; \
++ rm -f ${compdir}/log/autoreconf_$(PACKAGE).log; \
++ CWD=`pwd`;\
++ cd $(PACKAGE);  autoreconf -i >> ${compdir}/log/autoreconf_$(PACKAGE).log 2>&1 ; \
++ touch $$CWD/autoreconf.stamp;\
++fi
++endef
++#
+ define configure
+ if ! test -e configured.stamp && test -d $(PACKAGE); then \
+  echo "\t[$(PACKAGE)] configuration"; \
+diff --git a/lib/libxc/Makefile.loc b/lib/libxc/Makefile.loc
+index 58fd4b411..aef7446b1 100644
+--- a/lib/libxc/Makefile.loc
++++ b/lib/libxc/Makefile.loc
+@@ -32,6 +32,7 @@ uncompress:
+ 	@$(uncompress)
+ 
+ configure: uncompress
++	@$(autoreconf)
+ 	@$(configure)
+ 
+ compile: uncompress configure

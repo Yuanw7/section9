@@ -32,6 +32,7 @@ uncompress:
 	@$(uncompress)
 
 configure: uncompress
+	@$(autoreconf)
 	@$(configure)
 
 compile: uncompress configure

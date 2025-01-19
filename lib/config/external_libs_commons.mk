@@ -12,6 +12,16 @@ if ! test -e uncompressed.stamp; then \
 fi
 endef
 #
+define autoreconf
+if ! test -e autoreconf.stamp && test -d $(PACKAGE); then \
+ echo "\t[$(PACKAGE)] autoreconf"; \
+ rm -f ${compdir}/log/autoreconf_$(PACKAGE).log; \
+ CWD=`pwd`;\
+ cd $(PACKAGE);  autoreconf -i >> ${compdir}/log/autoreconf_$(PACKAGE).log 2>&1 ; \
+ touch $$CWD/autoreconf.stamp;\
+fi
+endef
+#
 define configure
 if ! test -e configured.stamp && test -d $(PACKAGE); then \
  echo "\t[$(PACKAGE)] configuration"; \
