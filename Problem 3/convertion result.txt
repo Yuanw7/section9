@@ -1,0 +1,3 @@
+Decimal: 26
+Binary: 00011010
+Hexadecimal: 1A
