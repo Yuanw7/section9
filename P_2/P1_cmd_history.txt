@@ -1,0 +1,168 @@
+    1  cd /path/to/your/file
+    2  docker cp /Users/kafufu/Downloads/mesh.dat zhwangs/comp_phys:ver1:/root/desktop/host/mesh.dat
+    3  docker cp /Users/kafufu/Downloads/mesh.dat zhwangs_phys_ver1.json/comp_phys:ver1:/root/desktop/host/mesh.dat
+    4  docker cp /Users/kafufu/Downloads/mesh.dat zhwangs_comp_phys_ver1.jason:/root/desktop/host/mesh.dat
+    5  git checkout -b feature_branch
+    6  git init
+    7  git config --golbal user.name yuanwang
+    8  docker ps
+    9  docker exec -it 1f4de3ac235b bash
+   10  mkdir lecture1_data
+   11  ls
+   12  cd lecture1-data/
+   13  cd lecture1_data/
+   14  echo hello world!
+   15  echo hello world! >hello_world.txt
+   16  cat hello_world.txt
+   17  echo a second hellow to the world! >> hello_world.txt
+   18  cat hello_world.txt
+   19  echo a new hello to the world! > hello_world.txt
+   20  cat hello_world.txt
+   21  ls -l
+   22  ls ./ > ls_out.txt 2 > ls_error.txt
+   23  ls ./ > ls_out.txt 2> ls_error.txt
+   24  ls 
+   25  cat is_out.txt
+   26  ls-out.txt
+   27  ls_out.txt
+   28  cat ls_out.txt
+   29  cat ls_error.txt
+   30  ls ./incorrect_dir >ls_out_incorrect.txt 2>ls_error_incorrect.txt
+   31  ls ./incorrect_dir >ls_out_incorrect.txt 2> ls_error_incorrect.txt
+   32  ls ./incorrect_dir > ls_out_incorrect.txt 2> ls_error_incorrect.txt
+   33  ls -1
+   34  ls
+   35  cat ls_out_incorrect.txt
+   36  cat ls_error_incorrect.txt
+   37  cat ls_error_incorrect.txt
+   38  ls
+   39  cd ~/Desktop
+   40  ls
+   41  grep "file" Screenshot 2025-01-20 at 9.31.15 AM.png
+   42  ls
+   43  cat P129.txt
+   44  grep "file" p129.txt
+   45  grep -r "file" ./
+   46  ls
+   47  grep -rl "file" ./
+   48  find ./ -type f -name "*.txt"
+   49  find ./ -type f -name "*.txt" -exec grep -l "file" {} +
+   50  cd ~/Desktop
+   51  mkdir -p p1_basic_unix
+   52  cd ~/Desktop/p1_basic_unix
+   53  touch test/basic/test_1.txt test/basic/test_2.txt test/basic/test_3.txt
+   54  mkdir -p test/basic
+   55  touch test/basic/test_1.txt test/basic/test_2.txt test/basic/test_3.txt
+   56  ls test/basic
+   57  echo "yuan wang jan 21" > test/basic/test_1.txt
+   58  cat test/basic/test_1.txt
+   59  cat test/basic/test_1.txt
+   60  ls -l test/basic/test_1.txt > test/basic/test_2.txt
+   61  chmod +x test/basic/test_1.txt
+   62  ls -l test/basic/test_1.txt >> test/basic/test_2.txt
+   63  tar -xvzf P1_B.tar.gz
+   64  find ~/Desktop -name "P1_B.tar.gz"
+   65  mv <～/desktop/p1_basic_unix>/P1_B.tar.gz .
+   66  pwd
+   67  mv </Users/kafufu/Desktop/p1_basic_unix>/P1_B.tar.gz .
+   68  mount | grep "$(pwd)"
+   69  mv /Users/kafufu/Desktop/p1_basic_unix/P1_B.tar.gz .
+   70  pwd
+   71  ls /Users/kafufu/Desktop/p1_basic_unix
+   72  wget <https://zhwangs.github.io/UCSB-comp-phys/data/problem_set/P1_B.tar.gz>
+   73  wget https://zhwangs.github.io/UCSB-comp-phys/data/problem_set/P1_B.tar.gz
+   74  brew install wget
+   75  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   76  wget https://zhwangs.github.io/UCSB-comp-phys/data/problem_set/P1_B.tar.gz
+   77  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   78  xport PATH=$PATH:~/Desktop/p1_basic_unix
+   79  wget https://zhwangs.github.io/UCSB-comp-phys/data/problem_set/P1_B.tar.gz
+   80  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   81  brew install wget
+   82  brew --version
+   83  brew help
+   84  echo >> /Users/kafufu/.zprofile\necho 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/kafufu/.zprofile\neval "$(/opt/homebrew/bin/brew shellenv)"
+   85   brew --version
+   86  brew install wget
+   87  wget https://zhwangs.github.io/UCSB-comp-phys/data/problem_set/P1_B.tar.gz
+   88  tar -xvzf P1_B.tar.gz
+   89  mv P1_B/example.sh .
+   90  mv P1_B/example_1.txt P1_B/demo_1.txt
+   91  mv P1_B/example_1.txt P1_B/demo_1.txt
+   92  mv P1_B/example1.txt P1_B/demo_1.txt
+   93  mv P1_B/example2.txt P1_B/demo_2.txt 
+   94  mv P1_B/demo_1.txt src/exe/
+   95  ls src/exe
+   96  mkdir -p src/exe
+   97  mv P1_B/demo_1.txt src/exe/
+   98  ls cache/data/tables/
+   99  mkdir cache/data/tables/
+  100  mkdir -p cache/data/tables/
+  101  mv P1_B/demo_2.txt cache/data/tables/
+  102  rm -r P1_B
+  103  ln -s src/exe/demo_1.txt demo_link
+  104  alias ll="ls -l"
+  105  grep "statistics" src/exe/demo_1.txt > src/utilities/grep_stat_demo1.txt
+  106  mkdir -p src/utilities/grep_stat_demo1.txt
+  107  grep "statistics" src/exe/demo_1.txt > src/utilities/grep_stat_demo1.txt
+  108  cat src/utilities/grep_stat_demo1.txt
+  109  rmdir src/utilities/grep_stat_demo1.txt
+  110  mkdir -p src/utilities
+  111  grep "statistics" src/exe/demo_1.txt > src/utilities/grep_stat_demo1.txt
+  112  cat src/utilities/grep_stat_demo1.txt
+  113  grep -r "statistics" . > cache/images/grep_stat_all.txt
+  114  mkdir -p cache/images
+  115  grep -r "statistics" . > cache/images/grep_stat_all.txt
+  116  cat cache/images/grep_stat_all.txt
+  117  find . -type f -name "*.txt" > test_3.txt
+  118  cat test_3.txt
+  119  find . -type f -name "*.txt" -exec grep "statistics" {} +
+  120  find . -type f -name "*.txt" -exec grep "statistics" {} + > grep_statistics_results.txt
+  121  cat grep_statistics_results.txt
+  122  tar -czvf p1_basic_unix.tar.gz p1_basic_unix
+  123  pwd
+  124  cd ..
+  125  tar -czvf p1_basic_unix.tar.gz p1_basic_unix
+  126  sha256sum p1_basic_unix.tar.gz
+  127  mkdir Archive_P1\ncd Archive_P1
+  128  git init
+  129  cp ../p1_basic_unix.tar.gz .
+  130  ls
+  131  git add p1_basic_unix.tar.gz
+  132  git commit -m "Initial commit: Added p1_basic_unix.tar.gz"
+  133  git remote add origin https://github.com/Yuanw7/129l.git
+  134  git push -u origin main
+  135  git fetch origin
+  136  git merge origin/main
+  137  git remote add origin https://github.com/Yuanw7/129lhw1.git
+  138  git remote set-url origin https://github.com/Yuanw7/129lhw1.git
+  139  git push -u origin main
+  140  cd ~/Desktop/p1_basic_unix
+  141  touch P1_cmd_history.txt
+  142  history > P1_cmd_history.txt
+  143  cat P1_cmd_history.txt
+  144  history > P1_cmd_history.txt
+  145  cat P1_cmd_history.txt
+  146  export HISTSIZE=2000\nexport HISTFILESIZE=2000
+  147  history -w
+  148  fc -R; fc -l 1 > P1_cmd_history.txt
+  149  cd /path/to/your/file
+  150  docker cp /Users/kafufu/Downloads/mesh.dat zhwangs/comp_phys:ver1:/root/desktop/host/mesh.dat
+  151  docker cp /Users/kafufu/Downloads/mesh.dat zhwangs_phys_ver1.json/comp_phys:ver1:/root/desktop/host/mesh.dat
+  152  docker cp /Users/kafufu/Downloads/mesh.dat zhwangs_comp_phys_ver1.jason:/root/desktop/host/mesh.dat
+  153  git checkout -b feature_branch
+  154  git init
+  155  git config --golbal user.name yuanwang
+  156  docker ps
+  157  docker exec -it 1f4de3ac235b bash
+  158  export HISTSIZE=2000\nexport HISTFILESIZE=2000
+  159  fc -R; fc -l 1 > P1_cmd_history.txt
+  160  cd /path/to/your/file
+  161  docker cp /Users/kafufu/Downloads/mesh.dat zhwangs/comp_phys:ver1:/root/desktop/host/mesh.dat
+  162  docker cp /Users/kafufu/Downloads/mesh.dat zhwangs_phys_ver1.json/comp_phys:ver1:/root/desktop/host/mesh.dat
+  163  docker cp /Users/kafufu/Downloads/mesh.dat zhwangs_comp_phys_ver1.jason:/root/desktop/host/mesh.dat
+  164  git checkout -b feature_branch
+  165  git init
+  166  git config --golbal user.name yuanwang
+  167  docker ps
+  168  docker exec -it 1f4de3ac235b bash
