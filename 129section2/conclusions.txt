@@ -1,0 +1,15 @@
+Conclusions:
+
+1. Time Complexity Trends:
+   - Graham Scan/Monotone Chain: O(n log n)
+   - Quickhull: O(n log n) average case
+   - Jarvis March: O(nh)
+
+2. Variance Impact:
+   - Runtime is independent of coordinate range/variance.
+   - Gaussian vs. Uniform: Minor differences due to hull complexity.
+
+3. Runtime Distributions (n=50):
+   - Graham Scan/Monotone Chain: Tight distributions.
+   - Quickhull: Moderate variance.
+   - Jarvis March: Widest distribution.
