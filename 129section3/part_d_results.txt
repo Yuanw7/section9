@@ -1,30 +1,30 @@
 La,b = [2, 3]:
   - Worst (max): 100000
-  - Best (min): 100000
-  - Average: 100000.00
+  - Best (min): 7
+  - Average: 60003.40
 
 La,b = [3, 2]:
   - Worst (max): 100000
-  - Best (min): 100000
-  - Average: 100000.00
+  - Best (min): 7
+  - Average: 10007.30
 
 La,b = [3, 5]:
   - Worst (max): 100000
-  - Best (min): 100000
-  - Average: 100000.00
+  - Best (min): 12
+  - Average: 40008.00
 
 La,b = [5, 3]:
   - Worst (max): 100000
-  - Best (min): 100000
-  - Average: 100000.00
+  - Best (min): 12
+  - Average: 40007.20
 
 La,b = [3, 12]:
   - Worst (max): 100000
-  - Best (min): 100000
-  - Average: 100000.00
+  - Best (min): 19
+  - Average: 20019.20
 
 La,b = [12, 3]:
   - Worst (max): 100000
-  - Best (min): 100000
-  - Average: 100000.00
+  - Best (min): 17
+  - Average: 30013.10
 
