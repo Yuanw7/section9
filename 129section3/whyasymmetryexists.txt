@@ -1,0 +1,1 @@
+In a deterministic Turing machine: the machine processes the multiplier B bit by bit. For each 1 in B, it adds the multiplicand A to the result. Longer multiplier B leads to more additions/shifts, then higher step count. This asymmetry arises because the DTM's operations depend on the order of processing.
