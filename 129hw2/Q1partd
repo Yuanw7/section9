@@ -1,0 +1,31 @@
+import numpy as np
+
+def local_basis(f, X, Y, dx=1e-3, dy=1e-3):
+    """
+    Compute the tangent vectors and normal vector at each point on the surface z = f(x, y).
+    
+    Args:
+        f: Function defining the surface z = f(x, y).
+        X, Y: Meshgrid arrays for x and y coordinates.
+        dx, dy: Step size for numerical gradients (optional).
+    
+    Returns:
+        Tuple (T1, T2, N) where:
+        - T1: Tangent vector along x-direction.
+        - T2: Tangent vector along y-direction.
+        - N: Unit normal vector.
+    """
+    Z = f(X, Y)
+    
+    # Compute partial derivatives (df/dx, df/dy)
+    dfdx, dfdy = np.gradient(Z, dx, dy)
+    
+    # Tangent vectors (∂/∂x and ∂/∂y in 3D)
+    T1 = np.stack([np.ones_like(Z), np.zeros_like(Z), dfdx], axis=-1)  # ∂/∂x → (1, 0, df/dx)
+    T2 = np.stack([np.zeros_like(Z), np.ones_like(Z), dfdy], axis=-1)   # ∂/∂y → (0, 1, df/dy)
+    
+    # Normal vector (cross product of tangents)
+    N = np.cross(T1, T2)
+    N_normalized = N / np.linalg.norm(N, axis=-1, keepdims=True)  # Unit normal
+    
+    return T1, T2, N_normalized

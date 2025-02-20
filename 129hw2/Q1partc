@@ -1,0 +1,97 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# ================================================
+# Define spherical basis vectors in Cartesian coordinates
+# ================================================
+def spherical_basis(theta, phi):
+    """
+    Compute spherical basis vectors {e_r, e_theta, e_phi} 
+    at a point (theta, phi) on the unit sphere.
+    Returns vectors in Cartesian coordinates.
+    """
+    # Spherical to Cartesian conversion for basis vectors
+    e_r = np.array([
+        np.sin(theta) * np.cos(phi),
+        np.sin(theta) * np.sin(phi),
+        np.cos(theta)
+    ])
+    
+    e_theta = np.array([
+        np.cos(theta) * np.cos(phi),
+        np.cos(theta) * np.sin(phi),
+        -np.sin(theta)
+    ])
+    
+    e_phi = np.array([
+        -np.sin(phi),
+        np.cos(phi),
+        0
+    ])
+    
+    return e_r, e_theta, e_phi
+
+# ================================================
+# Plot the unit sphere and basis vectors
+# ================================================
+def plot_spherical_basis(num_points=20):
+    # Create a grid of theta (polar) and phi (azimuthal) angles
+    theta = np.linspace(0, np.pi, num_points)
+    phi = np.linspace(0, 2*np.pi, num_points)
+    theta_grid, phi_grid = np.meshgrid(theta, phi)
+    
+    # Convert spherical coordinates to Cartesian for plotting
+    x = np.sin(theta_grid) * np.cos(phi_grid)
+    y = np.sin(theta_grid) * np.sin(phi_grid)
+    z = np.cos(theta_grid)
+    
+    # Initialize figure
+    fig = plt.figure(figsize=(10, 8))
+    ax = fig.add_subplot(111, projection='3d')
+    ax.set_title("Spherical Basis Vectors on Unit Sphere")
+    
+    # Plot the unit sphere (wireframe)
+    ax.plot_wireframe(x, y, z, color='gray', alpha=0.2, linewidth=0.5)
+    
+    # Plot basis vectors at selected points
+    skip = 3  # Reduce arrow density for clarity
+    for i in range(0, num_points, skip):
+        for j in range(0, num_points, skip):
+            # Get basis vectors at (theta, phi)
+            e_r, e_theta, e_phi = spherical_basis(theta_grid[i, j], phi_grid[i, j])
+            
+            # Position on the sphere (r=1)
+            pos = np.array([x[i, j], y[i, j], z[i, j]])
+            
+            # Plot e_r (radial, red)
+            ax.quiver(
+                pos[0], pos[1], pos[2],
+                e_r[0], e_r[1], e_r[2],
+                color='r', length=0.1, normalize=False
+            )
+            
+            # Plot e_theta (polar, green)
+            ax.quiver(
+                pos[0], pos[1], pos[2],
+                e_theta[0], e_theta[1], e_theta[2],
+                color='g', length=0.1, normalize=False
+            )
+            
+            # Plot e_phi (azimuthal, blue)
+            ax.quiver(
+                pos[0], pos[1], pos[2],
+                e_phi[0], e_phi[1], e_phi[2],
+                color='b', length=0.1, normalize=False
+            )
+    
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+    plt.show()
+
+# ================================================
+# Run the plotter
+# ================================================
+if __name__ == "__main__":
+    plot_spherical_basis(num_points=20)
