@@ -1,0 +1,29 @@
+# Define great circles
+def great_circle(phi, theta0):
+    return np.sin(theta0) * np.cos(phi), np.sin(theta0) * np.sin(phi), np.cos(theta0) * np.ones_like(phi)
+
+theta0 = np.pi / 4  # Example angle
+x_gc, y_gc, z_gc = great_circle(phi_vals, theta0)
+
+# Project great circle
+x_gc_proj, y_gc_proj = stereographic_projection(x_gc, y_gc, z_gc)
+
+# Plot great circle on the sphere and its projection
+fig = plt.figure(figsize=(12, 6))
+
+# Plot sphere with great circle
+ax1 = fig.add_subplot(121, projection='3d')
+ax1.plot_surface(x, y, z, color='lightblue', edgecolor='k', alpha=0.6)
+ax1.plot(x_gc, y_gc, z_gc, color='green', label='Great Circle')
+ax1.set_title("Unit Sphere with Great Circle")
+ax1.legend()
+
+# Plot projected great circle
+ax2 = fig.add_subplot(122)
+ax2.plot(x_gc_proj, y_gc_proj, color='green', label='Great Circle Projection')
+ax2.set_title("Stereographic Projection of Great Circle")
+ax2.set_xlabel("x'")
+ax2.set_ylabel("y'")
+ax2.legend()
+
+plt.show()

@@ -1,0 +1,21 @@
+# Define vectors at a point on the sphere
+point = np.array([np.sin(np.pi/4), np.sin(np.pi/4), np.cos(np.pi/4)])
+vector1 = np.array([1, 0, 0])
+vector2 = np.array([0, 1, 0])
+
+# Inner product on the sphere
+inner_product_sphere = np.dot(vector1, vector2)
+
+# Project vectors
+def project_vector(v, point):
+    return v / (1 - point[2])
+
+v1_proj = project_vector(vector1, point)
+v2_proj = project_vector(vector2, point)
+
+# Inner product after projection
+inner_product_proj = np.dot(v1_proj, v2_proj)
+
+print(f"Inner product on sphere: {inner_product_sphere}")
+print(f"Inner product after projection: {inner_product_proj}")
+

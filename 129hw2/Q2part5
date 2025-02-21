@@ -1,0 +1,25 @@
+# Define a great circle for parallel transport
+x_gc, y_gc, z_gc = great_circle(phi_vals, np.pi/4)
+
+# Project great circle
+x_gc_proj, y_gc_proj = stereographic_projection(x_gc, y_gc, z_gc)
+
+# Plot holonomy
+fig = plt.figure(figsize=(12, 6))
+
+# Plot sphere with great circle and parallel transport
+ax1 = fig.add_subplot(121, projection='3d')
+ax1.plot_surface(x, y, z, color='lightblue', edgecolor='k', alpha=0.6)
+ax1.plot(x_gc, y_gc, z_gc, color='orange', label='Great Circle')
+ax1.set_title("Unit Sphere with Great Circle and Parallel Transport")
+ax1.legend()
+
+# Plot projected great circle
+ax2 = fig.add_subplot(122)
+ax2.plot(x_gc_proj, y_gc_proj, color='orange', label='Great Circle Projection')
+ax2.set_title("Stereographic Projection of Great Circle")
+ax2.set_xlabel("x'")
+ax2.set_ylabel("y'")
+ax2.legend()
+
+plt.show()
