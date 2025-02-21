@@ -1,0 +1,66 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Parameters
+theta0 = np.pi / 5  # Initial polar angle (near north pole)
+alpha = 0.8  # Component along e_theta (choose alpha such that α² + β²sin²θ₀ = 1)
+beta = np.sqrt(1 - alpha**2) / np.sin(theta0)  # Component along e_phi
+
+# Generate points along the path θ(t) = t, φ(t) = 0 (theta from θ₀ to π/2)
+theta_vals = np.linspace(theta0, np.pi/2, 15)
+phi_vals = np.zeros_like(theta_vals)
+
+# Compute positions and transported vectors
+positions = []
+vectors = []
+
+for theta, phi in zip(theta_vals, phi_vals):
+    # Position on the sphere (Cartesian coordinates)
+    x = np.sin(theta) * np.cos(phi)
+    y = np.sin(theta) * np.sin(phi)
+    z = np.cos(theta)
+    positions.append([x, y, z])
+    
+    # Local spherical basis vectors (Cartesian components)
+    e_theta = np.array([np.cos(theta) * np.cos(phi), 
+                        np.cos(theta) * np.sin(phi), 
+                        -np.sin(theta)])
+    e_phi = np.array([-np.sin(phi), 
+                      np.cos(phi), 
+                      0])
+    
+    # Parallel-transported vector in local basis: n = α e_θ + β sinθ₀ e_ϕ
+    transported_vector = alpha * e_theta + beta * np.sin(theta0) * e_phi
+    vectors.append(transported_vector)
+
+# Plotting
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111, projection='3d')
+ax.set_title("Parallel Transport of a Vector on the Sphere")
+
+# Plot the unit sphere (wireframe)
+u = np.linspace(0, np.pi, 30)
+v = np.linspace(0, 2 * np.pi, 30)
+X = np.outer(np.sin(u), np.cos(v))
+Y = np.outer(np.sin(u), np.sin(v))
+Z = np.outer(np.cos(u), np.ones_like(v))
+ax.plot_wireframe(X, Y, Z, color='gray', alpha=0.1)
+
+# Plot the transported vectors
+for pos, vec in zip(positions, vectors):
+    ax.quiver(pos[0], pos[1], pos[2], 
+              vec[0], vec[1], vec[2], 
+              color='red', length=0.1, normalize=False)
+
+# Plot the path (meridian at φ=0)
+path_x = np.sin(theta_vals) * np.cos(phi_vals)
+path_y = np.sin(theta_vals) * np.sin(phi_vals)
+path_z = np.cos(theta_vals)
+ax.plot(path_x, path_y, path_z, color='blue', linestyle='--', linewidth=1)
+
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.view_init(elev=20, azim=-45)
+plt.show()

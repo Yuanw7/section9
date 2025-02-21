@@ -1,0 +1,77 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Parameters
+theta0 = np.pi / 4  # Polar angle (e.g., 45 degrees)
+alpha = 1.0  # Initial component along e_θ (ensure α² + β²sin²θ₀ = 1)
+beta = 0.0   # Initial component along e_φ
+
+# Validate normalization
+assert np.isclose(alpha**2 + (beta * np.sin(theta0))**2, 1.0), "Vector not normalized."
+
+# Generate φ values from 0 to 2π
+phi_vals = np.linspace(0, 2 * np.pi, 100)
+c = np.cos(theta0)  # Precompute cos(θ₀) for efficiency
+
+# Compute transported components n^θ(φ) and n^φ(φ)
+n_theta = alpha * np.cos(c * phi_vals) + beta * np.sin(theta0) * np.sin(c * phi_vals)
+n_phi = - (alpha / np.sin(theta0)) * np.sin(c * phi_vals) + beta * np.cos(c * phi_vals)
+
+# Compute positions and vectors in Cartesian coordinates
+positions = []
+vectors = []
+for i, phi in enumerate(phi_vals):
+    # Position on the sphere
+    x = np.sin(theta0) * np.cos(phi)
+    y = np.sin(theta0) * np.sin(phi)
+    z = np.cos(theta0)
+    positions.append([x, y, z])
+    
+    # Spherical basis vectors at (θ₀, φ)
+    e_theta = np.array([
+        np.cos(theta0) * np.cos(phi),
+        np.cos(theta0) * np.sin(phi),
+        -np.sin(theta0)
+    ])
+    e_phi = np.array([
+        -np.sin(phi),
+        np.cos(phi),
+        0
+    ])
+    
+    # Transported vector in Cartesian coordinates
+    vec = n_theta[i] * e_theta + n_phi[i] * e_phi
+    vectors.append(vec)
+
+# Plotting
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111, projection='3d')
+ax.set_title(f"Parallel Transport along Latitude θ = {theta0:.2f}")
+
+# Plot unit sphere (wireframe)
+u = np.linspace(0, np.pi, 30)
+v = np.linspace(0, 2 * np.pi, 30)
+X = np.outer(np.sin(u), np.cos(v))
+Y = np.outer(np.sin(u), np.sin(v))
+Z = np.outer(np.cos(u), np.ones_like(v))
+ax.plot_wireframe(X, Y, Z, color='gray', alpha=0.1)
+
+# Plot path (latitude circle)
+path_x = np.sin(theta0) * np.cos(phi_vals)
+path_y = np.sin(theta0) * np.sin(phi_vals)
+path_z = np.cos(theta0) * np.ones_like(phi_vals)
+ax.plot(path_x, path_y, path_z, color='blue', linestyle='--', linewidth=1, label="Path")
+
+# Plot transported vectors
+for pos, vec in zip(positions, vectors):
+    ax.quiver(pos[0], pos[1], pos[2], 
+              vec[0], vec[1], vec[2], 
+              color='red', length=0.1, normalize=False, alpha=0.7)
+
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.view_init(elev=20, azim=-45)  # Adjust view angle
+plt.legend()
+plt.show()
