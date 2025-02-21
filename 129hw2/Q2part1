@@ -4,11 +4,14 @@ from mpl_toolkits.mplot3d import Axes3D
 
 # Stereographic projection function
 def stereographic_projection(x, y, z):
-    return x / (1 - z), y / (1 - z)
+    with np.errstate(divide='ignore', invalid='ignore'):  # Suppress warnings
+        x_proj = np.where(z != 1, x / (1 - z), np.inf)  # Handle division by zero
+        y_proj = np.where(z != 1, y / (1 - z), np.inf)
+    return x_proj, y_proj
 
 # Generate mesh points on the unit sphere
-theta = np.linspace(0, np.pi, 100)
-phi = np.linspace(0, 2 * np.pi, 100)
+theta = np.linspace(0, np.pi, 100)  # Latitude
+phi = np.linspace(0, 2 * np.pi, 100)  # Longitude
 theta, phi = np.meshgrid(theta, phi)
 
 # Convert to Cartesian coordinates
@@ -44,8 +47,8 @@ ax1.legend()
 
 # Plot projected curves
 ax2 = fig.add_subplot(122)
-ax2.plot(x1_proj, y1_proj, color='red', label='Curve 1 Projection')
-ax2.plot(x2_proj, y2_proj, color='blue', label='Curve 2 Projection')
+ax2.plot(x1_proj[np.isfinite(x1_proj)], y1_proj[np.isfinite(y1_proj)], color='red', label='Curve 1 Projection')
+ax2.plot(x2_proj[np.isfinite(x2_proj)], y2_proj[np.isfinite(y2_proj)], color='blue', label='Curve 2 Projection')
 ax2.set_title("Stereographic Projection of Curves")
 ax2.set_xlabel("x'")
 ax2.set_ylabel("y'")

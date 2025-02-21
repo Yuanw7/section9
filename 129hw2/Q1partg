@@ -1,0 +1,22 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define θ₀ values from 0 to π
+theta0s = np.linspace(0, np.pi, 200)
+
+# Compute inner product (analytical solution)
+inner_products = np.cos(2 * np.pi * np.cos(theta0s))
+
+# Plot
+plt.figure(figsize=(10, 6))
+plt.plot(theta0s, inner_products, color='blue', linewidth=2)
+plt.xlabel(r'$\theta_0$ (radians)', fontsize=12)
+plt.ylabel('Inner Product (Initial vs Transported)', fontsize=12)
+plt.title('Holonomy Strength: Inner Product vs θ₀', fontsize=14)
+plt.grid(True, alpha=0.3)
+
+# Add key θ₀ values for intuition
+plt.axvline(x=np.pi/2, color='gray', linestyle='--', label=r'$\theta_0 = \pi/2$ (Equator)')
+plt.axvline(x=np.pi/4, color='gray', linestyle=':', label=r'$\theta_0 = \pi/4$')
+plt.legend()
+plt.show()
