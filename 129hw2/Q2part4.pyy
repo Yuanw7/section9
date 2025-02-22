@@ -1,0 +1,20 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+# Choose two vectors at a point on the sphere
+P = np.array([0, 0, 1])  # North pole (use another point for non-degenerate case)
+v1 = np.array([1, 0, 0])
+v2 = np.array([0, 1, 0])
+
+# Project vectors using Jacobian
+scale = 1 / (1 - P[2])
+proj_v1 = scale * v1[:2]
+proj_v2 = scale * v2[:2]
+
+# Compute inner products
+ip_3d = np.dot(v1, v2)
+ip_2d = np.dot(proj_v1, proj_v2)
+conformal_factor = scale**2
+
+print(f"Original Inner Product: {ip_3d}")
+print(f"Projected Inner Product: {ip_2d} (Expected: {ip_3d * conformal_factor})")
