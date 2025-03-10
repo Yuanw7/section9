@@ -1,0 +1,81 @@
+import numpy as np
+import scipy.linalg
+import matplotlib.pyplot as plt
+
+def construct_one_magnon_hamiltonian(N, J=1.0):
+    """Construct the single-magnon Hamiltonian (N x N matrix)."""
+    H = np.zeros((N, N))
+    for i in range(N):
+        H[i, i] = J
+        H[i, (i+1) % N] = -J/2
+        H[i, (i-1) % N] = -J/2
+    return H
+
+def green_lu(omega, H):
+    """Compute G using LU decomposition."""
+    A = omega * np.eye(H.shape[0]) - H
+    lu, piv = scipy.linalg.lu_factor(A)
+    G = scipy.linalg.lu_solve((lu, piv), np.eye(H.shape[0]))
+    return G
+
+def green_cholesky(omega, H):
+    """Compute G using Cholesky decomposition (if A is positive definite)."""
+    A = omega * np.eye(H.shape[0]) - H
+    try:
+        L = scipy.linalg.cholesky(A, lower=True)
+        Linv = scipy.linalg.inv(L)
+        G = Linv.T @ Linv  # A^{-1} = L^{-T} L^{-1}
+        return G
+    except np.linalg.LinAlgError:
+        print("Cholesky failed: Matrix not positive definite.")
+        return None
+
+# Parameters
+N = 30
+J = 1.0
+H = construct_one_magnon_hamiltonian(N, J)
+
+# Compute Green’s function for a range of ω
+omegas = np.linspace(-1, 3, 100)
+diag_G_lu = []
+diag_G_chol = []
+
+for w in omegas:
+    G_lu = green_lu(w, H)
+    diag_G_lu.append(np.diag(G_lu).real.mean())  # Average diagonal element
+    G_chol = green_cholesky(w, H)
+    if G_chol is not None:
+        diag_G_chol.append(np.diag(G_chol).real.mean())
+    else:
+        diag_G_chol.append(np.nan)
+
+# Plot
+plt.figure(figsize=(10, 6))
+plt.plot(omegas, diag_G_lu, label='LU Decomposition')
+plt.plot(omegas, diag_G_chol, '--', label='Cholesky Decomposition')
+plt.xlabel('Frequency (ω)')
+plt.ylabel('Average Diagonal of G(ω)')
+plt.title('Green’s Function for N=30')
+plt.legend()
+plt.grid()
+plt.show()
+
+def analytical_energy(k, N, J=1.0):
+    """Analytical energy dispersion E_k = 2J sin²(πk/N)."""
+    return 2 * J * np.sin(np.pi * k / N)**2
+
+# Diagonalize H to get numerical eigenvalues
+eigenvalues = np.linalg.eigh(H)[0]
+k_values = np.arange(N)
+E_analytical = [analytical_energy(k, N, J) for k in k_values]
+
+# Plot comparison
+plt.figure(figsize=(10, 6))
+plt.plot(k_values, eigenvalues, 'o', label='Numerical')
+plt.plot(k_values, E_analytical, '--', label='Analytical')
+plt.xlabel('Momentum Index (k)')
+plt.ylabel('Energy')
+plt.title('Magnon Energy Dispersion (N=30)')
+plt.legend()
+plt.grid()
+plt.show()

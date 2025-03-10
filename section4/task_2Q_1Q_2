@@ -1,0 +1,89 @@
+import numpy as np
+from itertools import product
+from scipy.sparse import lil_matrix, csr_matrix
+
+def construct_heisenberg_hamiltonian(N, J=1.0):
+    """
+    Construct the Heisenberg XXX Hamiltonian for N spins on a ring.
+    Returns a sparse matrix in CSR format.
+    """
+    # Generate all basis states (0=↑, 1=↓)
+    basis = list(product([0, 1], repeat=N))
+    dim = len(basis)
+    H = lil_matrix((dim, dim), dtype=np.float64)
+    
+    # Map each state to its index
+    state_to_idx = {state: i for i, state in enumerate(basis)}
+    
+    for i, state in enumerate(basis):
+        state = list(state)
+        # Diagonal terms (S_z^i S_z^{i+1})
+        diag = 0.0
+        for site in range(N):
+            sz_i = 0.5 if state[site] == 0 else -0.5
+            sz_j = 0.5 if state[(site+1) % N] == 0 else -0.5
+            diag += sz_i * sz_j
+        H[i, i] = J * (N/4 - diag)  # Include constant term JN/4
+        
+        # Off-diagonal terms (S_+^i S_-^{i+1} + S_-^i S_+^{i+1})
+        for site in range(N):
+            j = (site + 1) % N
+            if state[site] == 1 and state[j] == 0:  # Flip ↑ at j and ↓ at i
+                new_state = state.copy()
+                new_state[site] = 0
+                new_state[j] = 1
+                new_idx = state_to_idx[tuple(new_state)]
+                H[new_idx, i] += -J * 0.5
+                H[i, new_idx] += -J * 0.5  # Hermitian
+    return H.tocsr()
+
+# Example usage for N=3
+H = construct_heisenberg_hamiltonian(3)
+print("Hamiltonian for N=3 (dense):\n", H.toarray())
+
+def qr_algorithm(H, max_iter=100, tol=1e-6):
+    """
+    Diagonalize a Hermitian matrix H using the QR algorithm.
+    Returns eigenvalues as a sorted array.
+    """
+    H_k = H.copy().toarray() if isinstance(H, csr_matrix) else H.copy()
+    n = H_k.shape[0]
+    
+    for _ in range(max_iter):
+        Q, R = np.linalg.qr(H_k)
+        H_k = R @ Q
+        
+        # Check convergence (off-diagonal elements near zero)
+        off_diag = np.sum(np.abs(H_k - np.diag(np.diag(H_k))))
+        if off_diag < tol:
+            break
+    
+    eigenvalues = np.sort(np.diag(H_k))
+    return eigenvalues
+
+# Example usage with N=3
+eigenvalues = qr_algorithm(H)
+print("Eigenvalues for N=3:", eigenvalues)
+
+# Compare with exact diagonalization
+exact_eigenvalues = np.linalg.eigh(H.toarray())[0]
+print("Exact eigenvalues:", np.sort(exact_eigenvalues))
+
+import time
+
+# Compare Hamiltonian construction time for various N
+N_values = [3, 4, 5, 6]
+construction_times = []
+for N in N_values:
+    start = time.time()
+    H = construct_heisenberg_hamiltonian(N)
+    construction_times.append(time.time() - start)
+    print(f"N={N}: Construction time = {construction_times[-1]:.3f}s")
+
+# Plot results
+import matplotlib.pyplot as plt
+plt.plot(N_values, construction_times, 'o-')
+plt.xlabel("N")
+plt.ylabel("Time (s)")
+plt.title("Hamiltonian Construction Time")
+plt.show()
